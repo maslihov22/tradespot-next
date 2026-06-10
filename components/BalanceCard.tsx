@@ -60,6 +60,13 @@ function PnlSection() {
   const { line, area } = buildPnlPath(320, 56);
   const color = isPositive ? "var(--green)" : "var(--red)";
 
+  const lineRef = useRef<SVGPathElement>(null);
+  const [pnlPathLen, setPnlPathLen] = useState(0);
+
+  useEffect(() => {
+    if (lineRef.current) setPnlPathLen(lineRef.current.getTotalLength());
+  }, []);
+
   return (
     <motion.div
       className="relative z-10 mt-3 rounded-[16px] p-3"
@@ -93,7 +100,7 @@ function PnlSection() {
       </div>
 
       <svg
-        viewBox={`0 0 320 56`}
+        viewBox="0 0 320 56"
         className="block w-full"
         style={{ height: 44, color }}
         aria-hidden
@@ -104,8 +111,28 @@ function PnlSection() {
             <stop offset="100%" stopColor="currentColor" stopOpacity={0} />
           </linearGradient>
         </defs>
-        <path d={area} fill="url(#pnl-area-grad)" />
-        <path d={line} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+        <motion.path
+          d={area}
+          fill="url(#pnl-area-grad)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9, duration: 0.5 }}
+        />
+        <motion.path
+          ref={lineRef}
+          d={line}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          style={
+            pnlPathLen
+              ? { strokeDasharray: pnlPathLen, strokeDashoffset: pnlPathLen }
+              : {}
+          }
+          animate={pnlPathLen ? { strokeDashoffset: 0 } : {}}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
+        />
       </svg>
 
       <div className="flex justify-between mt-1">
