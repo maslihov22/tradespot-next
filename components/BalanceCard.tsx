@@ -4,31 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { mockUser, mockTransactions, chartPath, chartArea } from "@/lib/mock-data";
 
-function buildPnlPath(width: number, height: number): { line: string; area: string } {
-  const trades = mockTransactions.filter((t) => t.type === "trade");
-  const cumulative = trades.reduce<number[]>((acc, t) => {
-    const prev = acc[acc.length - 1] ?? 0;
-    return [...acc, prev + (t.sign === "plus" ? t.amount : -t.amount)];
-  }, [0]);
-
-  const min = Math.min(...cumulative);
-  const max = Math.max(...cumulative);
-  const range = max - min || 1;
-  const pad = 6;
-
-  const points = cumulative.map((v, i) => ({
-    x: (i / (cumulative.length - 1)) * width,
-    y: pad + ((max - v) / range) * (height - pad * 2),
-  }));
-
-  const line = points
-    .map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)} ${p.y.toFixed(1)}`)
-    .join(" ");
-  const area = `${line} L${width} ${height} L0 ${height} Z`;
-
-  return { line, area };
-}
-
 function AnimatedNumber({ value, prefix = "" }: { value: number; prefix?: string }) {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (v) =>
@@ -48,7 +23,17 @@ function AnimatedNumber({ value, prefix = "" }: { value: number; prefix?: string
   return <span>{display}</span>;
 }
 
-function PnlSection() {
+export default function BalanceCard() {
+  const pathRef = useRef<SVGPathElement>(null);
+  const [pathLen, setPathLen] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (pathRef.current) {
+      const len = pathRef.current.getTotalLength();
+      setPathLen(len);
+    }
+  }, []);
+
   const trades = mockTransactions.filter((t) => t.type === "trade");
   const pnlAmount = trades.reduce(
     (sum, t) => sum + (t.sign === "plus" ? t.amount : -t.amount),
@@ -56,100 +41,7 @@ function PnlSection() {
   );
   const totalVolume = trades.reduce((sum, t) => sum + t.amount, 0);
   const pnlPercent = totalVolume > 0 ? (pnlAmount / totalVolume) * 100 : 0;
-  const isPositive = pnlAmount >= 0;
-  const { line, area } = buildPnlPath(320, 56);
-  const color = isPositive ? "var(--green)" : "var(--red)";
-
-  const lineRef = useRef<SVGPathElement>(null);
-  const [pnlPathLen, setPnlPathLen] = useState(0);
-
-  useEffect(() => {
-    if (lineRef.current) setPnlPathLen(lineRef.current.getTotalLength());
-  }, []);
-
-  return (
-    <motion.div
-      className="relative z-10 mt-3 rounded-[16px] p-3"
-      style={{
-        background: "rgba(8,10,13,0.42)",
-        border: "1px solid rgba(238,243,247,0.08)",
-      }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.5, duration: 0.4 }}
-    >
-      <div className="flex items-center justify-between mb-2">
-        <div>
-          <p className="text-xs" style={{ color: "var(--muted)" }}>
-            Transaction PNL
-          </p>
-          <strong className="text-base font-bold" style={{ color }}>
-            {isPositive ? "+" : "-"}
-            {Math.abs(pnlAmount).toLocaleString("en-US", { maximumFractionDigits: 0 })} USDT
-          </strong>
-        </div>
-        <span
-          className="text-xs font-extrabold px-2.5 py-1 rounded-full"
-          style={{
-            background: isPositive ? "rgba(56,217,150,0.12)" : "rgba(255,95,109,0.12)",
-            color,
-          }}
-        >
-          {isPositive ? "+" : ""}{pnlPercent.toFixed(1)}%
-        </span>
-      </div>
-
-      <svg
-        viewBox="0 0 320 56"
-        className="block w-full"
-        style={{ height: 44, color }}
-        aria-hidden
-      >
-        <defs>
-          <linearGradient id="pnl-area-grad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="currentColor" stopOpacity={0.28} />
-            <stop offset="100%" stopColor="currentColor" stopOpacity={0} />
-          </linearGradient>
-        </defs>
-        <motion.path
-          d={area}
-          fill="url(#pnl-area-grad)"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9, duration: 0.5 }}
-        />
-        <motion.path
-          ref={lineRef}
-          d={line}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          style={
-            pnlPathLen
-              ? { strokeDasharray: pnlPathLen, strokeDashoffset: pnlPathLen }
-              : {}
-          }
-          animate={pnlPathLen ? { strokeDashoffset: 0 } : {}}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
-        />
-      </svg>
-
-      <div className="flex justify-between mt-1">
-        <span className="text-[10px]" style={{ color: "var(--muted)" }}>Start</span>
-        <span className="text-[10px]" style={{ color: "var(--muted)" }}>Now</span>
-      </div>
-    </motion.div>
-  );
-}
-
-export default function BalanceCard() {
-  const pathRef = useRef<SVGPathElement>(null);
-  const [pathLen, setPathLen] = useState(0);
-
-  useEffect(() => {
-    if (pathRef.current) setPathLen(pathRef.current.getTotalLength());
-  }, []);
+  const pnlPositive = pnlAmount >= 0;
 
   return (
     <motion.section
@@ -193,7 +85,7 @@ export default function BalanceCard() {
         </span>
       </div>
 
-      {/* main chart */}
+      {/* chart — рисуется слева направо */}
       <div className="relative z-10 mt-4">
         <svg viewBox="0 0 360 118" className="block w-full" style={{ height: 118 }} aria-hidden>
           <defs>
@@ -207,28 +99,56 @@ export default function BalanceCard() {
             fill="url(#area-grad)"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
           />
-          <motion.path
+          {/* невидимый путь для замера длины */}
+          <path
             ref={pathRef}
             d={chartPath}
             fill="none"
-            stroke="var(--green)"
-            strokeWidth={3.5}
-            strokeLinecap="round"
-            style={
-              pathLen
-                ? { strokeDasharray: pathLen, strokeDashoffset: pathLen }
-                : {}
-            }
-            animate={pathLen ? { strokeDashoffset: 0 } : {}}
-            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+            stroke="transparent"
+            strokeWidth={0}
           />
+          {/* анимированный путь — запускается только когда длина известна */}
+          {pathLen !== null && (
+            <motion.path
+              d={chartPath}
+              fill="none"
+              stroke="var(--green)"
+              strokeWidth={3.5}
+              strokeLinecap="round"
+              initial={{ strokeDasharray: pathLen, strokeDashoffset: pathLen }}
+              animate={{ strokeDashoffset: 0 }}
+              transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+            />
+          )}
         </svg>
       </div>
 
-      {/* PNL section — рассчитывается из trade-транзакций */}
-      <PnlSection />
+      {/* PNL строка */}
+      <motion.div
+        className="relative z-10 flex items-center justify-between mt-3 px-1"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.9, duration: 0.4 }}
+      >
+        <div>
+          <p className="text-xs" style={{ color: "var(--muted)" }}>Transaction PNL</p>
+          <strong className="text-sm font-bold" style={{ color: pnlPositive ? "var(--green)" : "var(--red)" }}>
+            {pnlPositive ? "+" : "-"}
+            {Math.abs(pnlAmount).toLocaleString("en-US", { maximumFractionDigits: 0 })} USDT
+          </strong>
+        </div>
+        <span
+          className="text-xs font-extrabold px-2.5 py-1 rounded-full"
+          style={{
+            background: pnlPositive ? "rgba(56,217,150,0.12)" : "rgba(255,95,109,0.12)",
+            color: pnlPositive ? "var(--green)" : "var(--red)",
+          }}
+        >
+          {pnlPositive ? "+" : ""}{pnlPercent.toFixed(1)}%
+        </span>
+      </motion.div>
 
       <div className="relative z-10 flex gap-2 mt-3">
         {[
