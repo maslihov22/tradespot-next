@@ -8,10 +8,12 @@ import RiskStrip from "@/components/RiskStrip";
 import ActivityFeed from "@/components/ActivityFeed";
 import DepositSheet from "@/components/DepositSheet";
 import WithdrawSheet from "@/components/WithdrawSheet";
+import FaqModal from "@/components/FaqModal";
 
 export default function Home() {
   const [depositOpen, setDepositOpen] = useState(false);
   const [withdrawOpen, setWithdrawOpen] = useState(false);
+  const [faqOpen, setFaqOpen] = useState(false);
 
   return (
     <>
@@ -30,7 +32,7 @@ export default function Home() {
             boxShadow: "0 34px 90px rgba(0,0,0,0.52), inset 0 1px 0 rgba(255,255,255,0.08)",
           }}
         >
-          <TopBar />
+          <TopBar onFaqClick={() => setFaqOpen(true)} />
           <BalanceCard />
           <ActionButtons
             onDeposit={() => setDepositOpen(true)}
@@ -43,6 +45,7 @@ export default function Home() {
 
       <DepositSheet open={depositOpen} onClose={() => setDepositOpen(false)} />
       <WithdrawSheet open={withdrawOpen} onClose={() => setWithdrawOpen(false)} />
+      <FaqModal open={faqOpen} onClose={() => setFaqOpen(false)} />
     </>
   );
 }

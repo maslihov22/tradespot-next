@@ -1,10 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, CircleHelp } from "lucide-react";
 import { mockUser } from "@/lib/mock-data";
 
-export default function TopBar() {
+interface Props {
+  onFaqClick: () => void;
+}
+
+export default function TopBar({ onFaqClick }: Props) {
   return (
     <motion.header
       className="flex items-center justify-between gap-4 mb-5"
@@ -30,13 +34,23 @@ export default function TopBar() {
           <h1 className="text-xl font-bold leading-tight truncate">{mockUser.name}</h1>
         </div>
       </div>
-      <button
-        className="w-11 h-11 rounded-[14px] flex items-center justify-center shrink-0"
-        style={{ background: "var(--panel)", border: "1px solid var(--line)", color: "var(--text)" }}
-        aria-label="Security center"
-      >
-        <ShieldCheck size={18} />
-      </button>
+      <div className="flex items-center gap-2 shrink-0">
+        <button
+          onClick={onFaqClick}
+          className="w-11 h-11 rounded-[14px] flex items-center justify-center"
+          style={{ background: "var(--panel)", border: "1px solid var(--line)", color: "var(--muted)" }}
+          aria-label="FAQ"
+        >
+          <CircleHelp size={18} />
+        </button>
+        <button
+          className="w-11 h-11 rounded-[14px] flex items-center justify-center"
+          style={{ background: "var(--panel)", border: "1px solid var(--line)", color: "var(--text)" }}
+          aria-label="Security center"
+        >
+          <ShieldCheck size={18} />
+        </button>
+      </div>
     </motion.header>
   );
 }
