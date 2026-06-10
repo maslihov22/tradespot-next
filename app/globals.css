@@ -31,3 +31,21 @@ button {
   font: inherit;
   cursor: pointer;
 }
+
+body {
+  background:
+    linear-gradient(135deg, rgba(112, 167, 255, 0.1), transparent 34rem),
+    radial-gradient(circle at 82% 10%, rgba(56, 217, 150, 0.1), transparent 28rem),
+    var(--bg);
+}
+
+.phone-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 100% 22px;
+  mask-image: linear-gradient(180deg, transparent, black 20%, transparent 96%);
+  border-radius: inherit;
+}
