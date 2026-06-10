@@ -2,25 +2,34 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, AlertTriangle, ArrowDownToLine } from "lucide-react";
+import { TrendingUp, AlertTriangle, ArrowDownToLine, ArrowUpFromLine } from "lucide-react";
 import { mockTransactions, type TxType, type Transaction } from "@/lib/mock-data";
 
 const FILTERS: { label: string; value: "all" | TxType }[] = [
-  { label: "All", value: "all" },
-  { label: "Trades", value: "trade" },
-  { label: "Funding", value: "funding" },
+  { label: "All",         value: "all" },
+  { label: "Trades",      value: "trade" },
+  { label: "Deposits",    value: "deposit" },
+  { label: "Withdrawals", value: "withdrawal" },
 ];
 
-function TxIcon({ sign }: { sign: Transaction["sign"] }) {
-  const Icon = sign === "warn" ? AlertTriangle : sign === "plus" ? TrendingUp : ArrowDownToLine;
+function TxIcon({ tx }: { tx: Transaction }) {
+  const Icon =
+    tx.type === "trade"
+      ? TrendingUp
+      : tx.type === "deposit"
+      ? ArrowDownToLine
+      : tx.sign === "warn"
+      ? AlertTriangle
+      : ArrowUpFromLine;
+
   const bg =
-    sign === "warn"
+    tx.sign === "warn"
       ? "rgba(244,200,74,0.16)"
-      : sign === "plus"
+      : tx.sign === "plus"
       ? "rgba(56,217,150,0.15)"
       : "rgba(255,95,109,0.15)";
   const color =
-    sign === "warn" ? "var(--yellow)" : sign === "plus" ? "var(--green)" : "var(--red)";
+    tx.sign === "warn" ? "var(--yellow)" : tx.sign === "plus" ? "var(--green)" : "var(--red)";
 
   return (
     <div
@@ -47,7 +56,7 @@ function TxRow({ tx, index }: { tx: Transaction; index: number }) {
       exit={{ opacity: 0, y: -6 }}
       transition={{ delay: index * 0.06, duration: 0.3 }}
     >
-      <TxIcon sign={tx.sign} />
+      <TxIcon tx={tx} />
       <div className="flex-1 min-w-0">
         <h3 className="text-sm font-semibold leading-tight truncate">{tx.title}</h3>
         <p className="text-xs mt-0.5" style={{ color: "var(--muted)" }}>{tx.subtitle}</p>
@@ -102,11 +111,12 @@ export default function ActivityFeed() {
         {FILTERS.map(({ label, value }) => (
           <button
             key={value}
-            className="h-9 rounded-xl text-sm font-bold transition-colors"
+            className="h-9 rounded-xl font-bold transition-colors"
             style={{
               background: active === value ? "var(--green)" : "transparent",
               color: active === value ? "#10140f" : "var(--muted)",
               border: "none",
+              fontSize: "11px",
             }}
             onClick={() => setActive(value)}
           >

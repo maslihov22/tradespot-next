@@ -8,7 +8,7 @@ export const mockUser = {
   reviewTime: "1h",
 };
 
-export type TxType = "trade" | "funding" | "withdrawal";
+export type TxType = "trade" | "deposit" | "withdrawal";
 
 export interface Transaction {
   id: string;
@@ -20,11 +20,11 @@ export interface Transaction {
 }
 
 export const mockTransactions: Transaction[] = [
-  { id: "1", type: "trade",   title: "BTC/USDT swing trade", subtitle: "Sell · Completed",  amount: 730,  sign: "plus" },
-  { id: "2", type: "funding", title: "Withdrawal attempt",   subtitle: "Manual review",     amount: 120,  sign: "warn" },
-  { id: "3", type: "trade",   title: "BTC/USDT grid close",  subtitle: "Sell · Completed",  amount: 492,  sign: "plus" },
-  { id: "4", type: "funding", title: "USDT deposit",         subtitle: "Confirmed",         amount: 1000, sign: "plus" },
-  { id: "5", type: "trade",   title: "ETH/USDT long",        subtitle: "Buy · Completed",   amount: 218,  sign: "plus" },
+  { id: "1", type: "trade",      title: "BTC/USDT swing trade", subtitle: "Sell · Completed",  amount: 730,  sign: "plus" },
+  { id: "2", type: "withdrawal", title: "Withdrawal attempt",   subtitle: "Manual review",     amount: 120,  sign: "warn" },
+  { id: "3", type: "trade",      title: "BTC/USDT grid close",  subtitle: "Sell · Completed",  amount: 492,  sign: "plus" },
+  { id: "4", type: "deposit",    title: "USDT deposit",         subtitle: "Confirmed",         amount: 1000, sign: "plus" },
+  { id: "5", type: "trade",      title: "ETH/USDT long",        subtitle: "Buy · Completed",   amount: 218,  sign: "plus" },
 ];
 
 export const chartPath =
