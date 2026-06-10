@@ -2,13 +2,17 @@
 
 import { motion } from "framer-motion";
 import { ShieldCheck, CircleHelp } from "lucide-react";
-import { mockUser } from "@/lib/mock-data";
+import { useTelegramUser, getInitials, getDisplayName } from "@/lib/telegram";
 
 interface Props {
   onFaqClick: () => void;
 }
 
 export default function TopBar({ onFaqClick }: Props) {
+  const tgUser = useTelegramUser();
+  const initials = getInitials(tgUser);
+  const name = getDisplayName(tgUser);
+
   return (
     <motion.header
       className="flex items-center justify-between gap-4 mb-5"
@@ -25,13 +29,13 @@ export default function TopBar({ onFaqClick }: Props) {
             border: "1px solid rgba(244,200,74,0.48)",
           }}
         >
-          {mockUser.initials}
+          {initials}
         </div>
         <div className="min-w-0">
           <p className="text-xs font-bold uppercase tracking-wide" style={{ color: "var(--yellow)" }}>
             Portfolio
           </p>
-          <h1 className="text-xl font-bold leading-tight truncate">{mockUser.name}</h1>
+          <h1 className="text-xl font-bold leading-tight truncate">{name}</h1>
         </div>
       </div>
       <div className="flex items-center gap-2 shrink-0">
