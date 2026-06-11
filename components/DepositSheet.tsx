@@ -17,10 +17,10 @@ export default function DepositSheet({ open, onClose }: Props) {
       >
         {[
           ["Method", "Bank transfer"],
-          ["Bank", "Banco Pichincha"],
+          ["Bank", "National Commercial Bank"],
           ["Card", "4556 7302 8841 2190"],
           ["Minimum", "$250.00"],
-          ["Reference", "Pago de verificacion"],
+          ["Reference", "Deposit verification"],
         ].map(([label, value]) => (
           <div key={label} className="flex justify-between text-sm">
             <span style={{ color: "var(--muted)" }}>{label}</span>

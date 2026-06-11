@@ -15,7 +15,7 @@ export default function WithdrawSheet({ open, onClose }: Props) {
       >
         <AlertTriangle size={20} style={{ color: "var(--yellow)", flexShrink: 0, marginTop: 2 }} />
         <p className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
-          Para activar el retiro automático, complete la verificación de depósito mínimo.
+          To enable automatic withdrawal, complete the minimum deposit verification.
         </p>
       </div>
       <div
@@ -23,8 +23,8 @@ export default function WithdrawSheet({ open, onClose }: Props) {
         style={{ background: "rgba(8,10,13,0.5)", border: "1px solid var(--line)" }}
       >
         {[
-          ["Reason", "Risk review"],
-          ["Evidence", "Audit trail required"],
+          ["Reason", "Withdrawal limit on account"],
+          ["Details", "Audit trail required"],
         ].map(([label, value]) => (
           <div key={label} className="flex justify-between text-sm">
             <span style={{ color: "var(--muted)" }}>{label}</span>

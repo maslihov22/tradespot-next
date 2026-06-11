@@ -1,9 +1,9 @@
 export const mockUser = {
   name: "Carlos Mendoza",
   initials: "CM",
-  balance: 2320.40,
-  pnl: 1440,
-  pnlPercent: 14.8,
+  balance: 828778,
+  pnl: 820778,
+  pnlPercent: 98.8,
   events: 5,
   reviewTime: "1h",
 };
@@ -20,11 +20,10 @@ export interface Transaction {
 }
 
 export const mockTransactions: Transaction[] = [
-  { id: "1", type: "trade",      title: "BTC/USDT swing trade", subtitle: "Sell · Completed",  amount: 730,  sign: "plus" },
-  { id: "2", type: "withdrawal", title: "Withdrawal attempt",   subtitle: "Manual review",     amount: 120,  sign: "warn" },
-  { id: "3", type: "trade",      title: "BTC/USDT grid close",  subtitle: "Sell · Completed",  amount: 492,  sign: "plus" },
-  { id: "4", type: "deposit",    title: "USDT deposit",         subtitle: "Confirmed",         amount: 1000, sign: "plus" },
-  { id: "5", type: "trade",      title: "ETH/USDT long",        subtitle: "Buy · Completed",   amount: 218,  sign: "plus" },
+  { id: "1", type: "trade",   title: "SOL/USDT big swing",   subtitle: "Sell · Completed",  amount: 471220, sign: "plus" },
+  { id: "2", type: "trade",   title: "ETH/USDT long play",   subtitle: "Sell · Completed",  amount: 350228, sign: "plus" },
+  { id: "3", type: "trade",   title: "BTC/USDT swing trade", subtitle: "Sell · Completed",  amount: 137330, sign: "plus" },
+  { id: "4", type: "deposit", title: "JMD deposit",          subtitle: "Confirmed",         amount: 8000,   sign: "plus" },
 ];
 
 export const chartPath =
