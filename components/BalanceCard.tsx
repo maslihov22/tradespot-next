@@ -75,15 +75,9 @@ export default function BalanceCard() {
       </div>
 
       <div className="relative z-10 flex items-end justify-between mt-3 gap-3">
-        <strong className="text-[37px] leading-none font-bold">
+        <strong className="text-[42px] leading-none font-bold">
           <AnimatedNumber value={mockUser.balance} prefix="J$" />
         </strong>
-        <span
-          className="font-extrabold px-2.5 py-1.5 rounded-full mb-1"
-          style={{ background: "var(--green)", color: "#05100b", fontSize: "9px" }}
-        >
-          +{mockUser.pnlPercent}%
-        </span>
       </div>
 
       {/* chart — рисуется слева направо */}
