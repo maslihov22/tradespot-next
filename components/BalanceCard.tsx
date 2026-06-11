@@ -79,8 +79,8 @@ export default function BalanceCard() {
           <AnimatedNumber value={mockUser.balance} prefix="J$" />
         </strong>
         <span
-          className="text-xs font-extrabold px-2.5 py-1.5 rounded-full mb-1"
-          style={{ background: "var(--green)", color: "#05100b" }}
+          className="font-extrabold px-2.5 py-1.5 rounded-full mb-1"
+          style={{ background: "var(--green)", color: "#05100b", fontSize: "9px" }}
         >
           +{mockUser.pnlPercent}%
         </span>
