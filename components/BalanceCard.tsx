@@ -35,12 +35,13 @@ export default function BalanceCard() {
   }, []);
 
   const trades = mockTransactions.filter((t) => t.type === "trade");
+  const deposits = mockTransactions.filter((t) => t.type === "deposit");
   const pnlAmount = trades.reduce(
     (sum, t) => sum + (t.sign === "plus" ? t.amount : -t.amount),
     0,
   );
-  const totalVolume = trades.reduce((sum, t) => sum + t.amount, 0);
-  const pnlPercent = totalVolume > 0 ? (pnlAmount / totalVolume) * 100 : 0;
+  const totalDeposited = deposits.reduce((sum, t) => sum + t.amount, 0);
+  const pnlPercent = totalDeposited > 0 ? (pnlAmount / totalDeposited) * 100 : 0;
   const pnlPositive = pnlAmount >= 0;
 
   return (

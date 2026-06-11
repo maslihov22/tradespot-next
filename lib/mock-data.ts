@@ -3,7 +3,7 @@ export const mockUser = {
   initials: "CM",
   balance: 966778,
   pnl: 958778,
-  pnlPercent: 99.1,
+  pnlPercent: 11984.7,
   events: 5,
   reviewTime: "1h",
 };
