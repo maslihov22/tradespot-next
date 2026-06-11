@@ -75,7 +75,7 @@ export default function BalanceCard() {
       </div>
 
       <div className="relative z-10 flex items-end justify-between mt-3 gap-3">
-        <strong className="text-[42px] leading-none font-bold">
+        <strong className="text-[37px] leading-none font-bold">
           <AnimatedNumber value={mockUser.balance} prefix="J$" />
         </strong>
         <span
