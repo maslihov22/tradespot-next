@@ -1,9 +1,9 @@
 export const mockUser = {
   name: "Carlos Mendoza",
   initials: "CM",
-  balance: 828778,
-  pnl: 820778,
-  pnlPercent: 98.8,
+  balance: 966778,
+  pnl: 958778,
+  pnlPercent: 99.1,
   events: 5,
   reviewTime: "1h",
 };

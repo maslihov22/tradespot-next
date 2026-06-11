@@ -62,7 +62,7 @@ function TxRow({ tx, index }: { tx: Transaction; index: number }) {
         <p className="text-xs mt-0.5" style={{ color: "var(--muted)" }}>{tx.subtitle}</p>
       </div>
       <strong className="text-sm font-bold shrink-0" style={{ color: amountColor }}>
-        {amountPrefix}${tx.amount}
+        {amountPrefix}J${tx.amount.toLocaleString("en-US")}
       </strong>
     </motion.article>
   );

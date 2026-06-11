@@ -75,7 +75,7 @@ export default function BalanceCard() {
 
       <div className="relative z-10 flex items-end justify-between mt-3 gap-3">
         <strong className="text-[42px] leading-none font-bold">
-          <AnimatedNumber value={mockUser.balance} prefix="$" />
+          <AnimatedNumber value={mockUser.balance} prefix="J$" />
         </strong>
         <span
           className="text-sm font-extrabold px-3 py-1.5 rounded-full mb-1"
@@ -136,7 +136,7 @@ export default function BalanceCard() {
           <p className="text-xs" style={{ color: "var(--muted)" }}>Transaction PNL</p>
           <strong className="text-sm font-bold" style={{ color: pnlPositive ? "var(--green)" : "var(--red)" }}>
             {pnlPositive ? "+" : "-"}
-            {Math.abs(pnlAmount).toLocaleString("en-US", { maximumFractionDigits: 0 })} USDT
+            J${Math.abs(pnlAmount).toLocaleString("en-US", { maximumFractionDigits: 0 })}
           </strong>
         </div>
         <span
